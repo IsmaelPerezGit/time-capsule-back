@@ -3,13 +3,13 @@ var router = express.Router();
 var knex = require('../db/knex')
 var bcrypt = require('bcrypt');
 
-// //Splash page
-// router.get('/', function(req, res, next) {
-//   knex.raw(`select * from users`)
-//   .then(data => {
-//     res.json(data.rows)
-//   });
-// });
+//Splash page
+router.get('/', function(req, res, next) {
+  knex.raw(`select * from users`)
+  .then(data => {
+    res.json(data.rows)
+  });
+});
 
 // //Create new user form
 // router.get('/new', function(req, res, next) {
@@ -25,8 +25,8 @@ router.post('/new', function(req, res, next) {
       } else {
         if (req.body.password === req.body.confirm) {
           bcrypt.hash(req.body.password, 8, function(err, hash) {
-            knex.raw(`insert into users (username, password) values ('${req.body.username}', '${hash}')`).then(function() {
-              res.redirect('/users')
+            knex.raw(`insert into users (email, username, password) values ('${req.body.email}', '${req.body.username}','${hash}')`).then(function() {
+              res.redirect('/')
             })
           });
         } else {
@@ -36,6 +36,13 @@ router.post('/new', function(req, res, next) {
     }
   })
 });
+
+// router.post('/new', function(req, res, next) {
+//             knex.raw(`insert into users (email, username, password) values ('${req.body.email}', '${req.body.username}','${req.body.password}')`).then(function() {
+//               res.redirect('/')
+//             })
+//           });
+
 
 // //Delete user from database
 // router.post('/:id/delete', function(req, res, next) {
